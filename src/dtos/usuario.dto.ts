@@ -1,12 +1,10 @@
+import { TweetDto } from "./tweet.dto";
+
 export interface CreateUsuarioDto {
   nome: string;
   email: string;
   username: string;
   password: string;
-}
-
-export interface CreateTweetDto {
-  descricao: string;
 }
 
 export interface UsuarioDto {
@@ -18,12 +16,8 @@ export interface UsuarioDto {
   tweets: TweetDto[];
 }
 
-export interface TweetDto {
-  id: string;
-  descricao: string;
-  likes: LikeDto[];
-}
-
-export interface LikeDto {
-  id: string;
+export interface QueryFilterDto {
+  nome?: string;
+  email?: string;
+  username?: string;
 }
