@@ -1,8 +1,21 @@
 import { Router } from "express";
+import { UsuarioMiddleware } from "../middlewares/usuario-meddleware";
 import { UsuarioController } from "../controllers/usuario.controller";
 
-const router = Router();
+export class UsuarioRoutes {
+  public static execute(): Router {
+    const router = Router();
 
-router.get("/usuarios", UsuarioController.findAll);
+    router.post(
+      "/usuarios",
+      UsuarioMiddleware.validate,
+      UsuarioController.create
+    );
 
-export default router;
+    router.get("/usuarios", UsuarioController.findAll);
+
+    router.get("/usuarios/:id", UsuarioController.findOneById);
+
+    return router;
+  }
+}

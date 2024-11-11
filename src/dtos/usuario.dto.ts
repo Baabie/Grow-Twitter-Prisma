@@ -11,13 +11,13 @@ export interface UsuarioDto {
   id: string;
   nome: string;
   email: string;
-  password: string;
   username: string;
-  tweets: TweetDto[];
 }
 
 export interface QueryFilterDto {
   nome?: string;
   email?: string;
   username?: string;
+  descricao?: string;
+  usuarioId?: string;
 }

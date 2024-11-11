@@ -1,5 +1,10 @@
+import { PrismaClient, Prisma, Usuario } from "@prisma/client";
 import { prisma } from "../database/prisma.database";
-import { CreateUsuarioDto, QueryFilterDto } from "../dtos/usuario.dto";
+import {
+  CreateUsuarioDto,
+  QueryFilterDto,
+  UsuarioDto,
+} from "../dtos/usuario.dto";
 import { ResponseApi } from "../types/response";
 import { Bcrypt } from "../utils/bcrypt";
 
@@ -51,9 +56,17 @@ export class UsuarioService {
     };
   }
 
-  public async findAll(): Promise<ResponseApi> {
+  public async findAll(query: { nome?: string }): Promise<ResponseApi> {
+    const where: Prisma.UsuarioWhereInput = {};
+
+    if (query.nome) {
+      where.nome = { contains: query.nome, mode: "insensitive" }; // Busca insensível ao caso
+    }
+
     try {
-      const usuarios = await prisma.usuario.findMany(); // Busca todos os usuários
+      const usuarios = await prisma.usuario.findMany({
+        where,
+      });
 
       return {
         ok: true,
@@ -100,5 +113,14 @@ export class UsuarioService {
         data: null,
       };
     }
+  }
+
+  private mapToDto(usuario: Usuario): UsuarioDto {
+    return {
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+      username: usuario.username,
+    };
   }
 }

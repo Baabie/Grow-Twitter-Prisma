@@ -1,5 +1,5 @@
 import { Request, response, Response } from "express";
-import { CreateUsuarioDto } from "../dtos/growTwitter.dto";
+import { CreateUsuarioDto } from "../dtos/usuario.dto";
 import { UsuarioService } from "../services";
 
 export class UsuarioController {
@@ -41,7 +41,7 @@ export class UsuarioController {
     } catch (error: any) {
       res.status(500).json({
         ok: false,
-        message: `Error do servidor: ${error.message}`,
+        message: `Erro do servidor: ${error.message}`,
       });
     }
   }

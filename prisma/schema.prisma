@@ -39,7 +39,7 @@ model Tweet {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   likes   Like[]
-  replies Reply[] @relation("TweetReplies") // Nome da relação
+  replies Reply[] @relation("TweetReplies")
 
   @@map("tweets")
 }
