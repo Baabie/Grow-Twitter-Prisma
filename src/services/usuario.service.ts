@@ -115,6 +115,66 @@ export class UsuarioService {
     }
   }
 
+  public async follow(
+    followerId: string,
+    followingId: string
+  ): Promise<ResponseApi> {
+    const followExists = await prisma.seguidor.findFirst({
+      where: {
+        usuarioSeguidorId: followerId,
+        usuarioSeguidoId: followingId,
+      },
+    });
+
+    if (followExists) {
+      return {
+        ok: false,
+        code: 409,
+        message: "Você já está seguindo esse usuário.",
+      };
+    }
+
+    const follow = await prisma.seguidor.create({
+      data: {
+        usuarioSeguidorId: followerId,
+        usuarioSeguidoId: followingId,
+      },
+    });
+
+    return {
+      ok: true,
+      code: 201,
+      message: "Usuário seguido com sucesso!",
+      data: follow,
+    };
+  }
+
+  public async unfollow(
+    followerId: string,
+    followingId: string
+  ): Promise<ResponseApi> {
+    const follow = await prisma.seguidor.deleteMany({
+      where: {
+        usuarioSeguidorId: followerId,
+        usuarioSeguidoId: followingId,
+      },
+    });
+
+    if (follow.count === 0) {
+      return {
+        ok: false,
+        code: 404,
+        message: "Você não está seguindo esse usuário.",
+      };
+    }
+
+    return {
+      ok: true,
+      code: 200,
+      message: "Usuário deixado de seguir com sucesso!",
+    };
+  }
+
   private mapToDto(usuario: Usuario): UsuarioDto {
     return {
       id: usuario.id,

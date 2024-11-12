@@ -1,9 +1,15 @@
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 import { CreateUsuarioDto } from "../dtos/usuario.dto";
-import { UsuarioService } from "../services";
+import { UsuarioService } from "../services/usuario.service";
 
 export class UsuarioController {
-  public static async create(req: Request, res: Response): Promise<void> {
+  private usuarioService: UsuarioService;
+
+  constructor() {
+    this.usuarioService = new UsuarioService();
+  }
+
+  public async create(req: Request, res: Response): Promise<void> {
     try {
       const { nome, email, username, password } = req.body;
 
@@ -14,9 +20,7 @@ export class UsuarioController {
         password,
       };
 
-      const service = new UsuarioService();
-      const result = await service.create(data);
-
+      const result = await this.usuarioService.create(data);
       const { code, ...response } = result;
       res.status(code).json(response);
     } catch (error: any) {
@@ -27,12 +31,43 @@ export class UsuarioController {
     }
   }
 
-  public static async findAll(req: Request, res: Response): Promise<void> {
+  public async follow(req: Request, res: Response): Promise<void> {
+    try {
+      const { followerId, followingId } = req.body; // IDs no corpo da requisição
+      const response = await this.usuarioService.follow(
+        followerId,
+        followingId
+      );
+      res.status(response.code).json(response);
+    } catch (error: any) {
+      res.status(500).json({
+        ok: false,
+        message: `Erro do servidor: ${error.message}`,
+      });
+    }
+  }
+
+  public async unfollow(req: Request, res: Response): Promise<void> {
+    try {
+      const { followerId, followingId } = req.body; // IDs no corpo da requisição
+      const response = await this.usuarioService.unfollow(
+        followerId,
+        followingId
+      );
+      res.status(response.code).json(response);
+    } catch (error: any) {
+      res.status(500).json({
+        ok: false,
+        message: `Erro do servidor: ${error.message}`,
+      });
+    }
+  }
+
+  public async findAll(req: Request, res: Response): Promise<void> {
     try {
       const { nome } = req.query;
 
-      const service = new UsuarioService();
-      const result = await service.findAll({
+      const result = await this.usuarioService.findAll({
         nome: nome as string,
       });
 
@@ -46,13 +81,11 @@ export class UsuarioController {
     }
   }
 
-  public static async findOneById(req: Request, res: Response): Promise<void> {
+  public async findOneById(req: Request, res: Response): Promise<void> {
     try {
       const { id } = req.params;
 
-      const service = new UsuarioService();
-      const result = await service.findOneById(id);
-
+      const result = await this.usuarioService.findOneById(id);
       const { code, ...response } = result;
       res.status(code).json(response);
     } catch (error: any) {
@@ -62,43 +95,6 @@ export class UsuarioController {
       });
     }
   }
-  // public static async update(req: Request, res: Response): Promise<void> {
-  //   try {
-  //     const { id } = req.params;
-  //     const { nome, email, username, password } = req.body;
 
-  //     const service = new UsuarioService();
-  //     const result = await service.update(id, {
-  //       nome,
-  //       email,
-  //       username,
-  //       password,
-  //     });
-
-  //     const { code, ...response } = result;
-  //     res.status(code).json(response);
-  //   } catch (error: any) {
-  //     res.status(500).json({
-  //       ok: false,
-  //       message: `Erro do servidor: ${error.message}`,
-  //     });
-  //   }
-  // }
-
-  // public static async remove(req: Request, res: Response): Promise<void> {
-  //   try {
-  //     const { id } = req.params;
-
-  //     const service = new UsuarioService();
-  //     const result = await service.remove(id);
-
-  //     const { code, ...response } = result;
-  //     res.status(code).json(response);
-  //   } catch (error: any) {
-  //     res.status(500).json({
-  //       ok: false,
-  //       message: `Erro do servidor: ${error.message}`,
-  //     });
-  //   }
-  // }
+  // Métodos update e remove comentados podem ser descomentados e ajustados conforme necessário.
 }

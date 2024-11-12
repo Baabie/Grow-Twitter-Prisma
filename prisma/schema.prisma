@@ -74,6 +74,8 @@ model Seguidor {
 model Reply {
   id String @id @default(uuid()) @db.Uuid
 
+  descricao String
+
   tweet   Tweet  @relation("TweetReplies", fields: [tweetId], references: [id])
   tweetId String @map("tweet_id") @db.Uuid
 

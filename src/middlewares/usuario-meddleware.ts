@@ -51,6 +51,7 @@ export class UsuarioMiddleware {
       });
     }
 
-    return next();
+    // Se todas as validações passarem, chama next()
+    next();
   }
 }

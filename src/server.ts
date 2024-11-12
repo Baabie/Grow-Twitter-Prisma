@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import { UsuarioRoutes } from "./routes/usuario.routes";
+import { ReplyRoutes } from "./routes/replie.routes";
 
 // Criando servidor com express
 const app = express();
@@ -15,6 +16,8 @@ app.use(UsuarioRoutes.execute());
 app.get("/", (request: Request, response: Response) => {
   response.status(200).json({ message: "Api Prisma" });
 });
+
+app.use("/replies", ReplyRoutes.execute());
 
 // Iniciar servidor
 app.listen(process.env.PORT, () => {
