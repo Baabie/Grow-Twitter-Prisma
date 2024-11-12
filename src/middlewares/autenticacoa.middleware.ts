@@ -16,9 +16,10 @@ export const authMiddleware = (
     nome: "Nome do Usuário",
     email: "usuario@example.com",
     username: "usuario123",
+    password: "senhaExemplo",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
-  next();
+  return next();
 };

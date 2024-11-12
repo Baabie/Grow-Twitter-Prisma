@@ -3,12 +3,6 @@ import { CreateUsuarioDto } from "../dtos/usuario.dto";
 import { UsuarioService } from "../services/usuario.service";
 
 export class UsuarioController {
-  private usuarioService: UsuarioService;
-
-  constructor() {
-    this.usuarioService = new UsuarioService();
-  }
-
   public async create(req: Request, res: Response): Promise<void> {
     try {
       const { nome, email, username, password } = req.body;
@@ -20,7 +14,8 @@ export class UsuarioController {
         password,
       };
 
-      const result = await this.usuarioService.create(data);
+      const service = new UsuarioService();
+      const result = await service.create(data);
       const { code, ...response } = result;
       res.status(code).json(response);
     } catch (error: any) {
@@ -33,11 +28,10 @@ export class UsuarioController {
 
   public async follow(req: Request, res: Response): Promise<void> {
     try {
-      const { followerId, followingId } = req.body; // IDs no corpo da requisição
-      const response = await this.usuarioService.follow(
-        followerId,
-        followingId
-      );
+      const { followerId, followingId } = req.body;
+
+      const service = new UsuarioService();
+      const response = await service.follow(followerId, followingId);
       res.status(response.code).json(response);
     } catch (error: any) {
       res.status(500).json({
@@ -49,11 +43,10 @@ export class UsuarioController {
 
   public async unfollow(req: Request, res: Response): Promise<void> {
     try {
-      const { followerId, followingId } = req.body; // IDs no corpo da requisição
-      const response = await this.usuarioService.unfollow(
-        followerId,
-        followingId
-      );
+      const { followerId, followingId } = req.body;
+
+      const service = new UsuarioService();
+      const response = await service.unfollow(followerId, followingId);
       res.status(response.code).json(response);
     } catch (error: any) {
       res.status(500).json({
@@ -66,8 +59,8 @@ export class UsuarioController {
   public async findAll(req: Request, res: Response): Promise<void> {
     try {
       const { nome } = req.query;
-
-      const result = await this.usuarioService.findAll({
+      const service = new UsuarioService();
+      const result = await service.findAll({
         nome: nome as string,
       });
 
@@ -85,7 +78,8 @@ export class UsuarioController {
     try {
       const { id } = req.params;
 
-      const result = await this.usuarioService.findOneById(id);
+      const service = new UsuarioService();
+      const result = await service.findOneById(id);
       const { code, ...response } = result;
       res.status(code).json(response);
     } catch (error: any) {
@@ -95,6 +89,4 @@ export class UsuarioController {
       });
     }
   }
-
-  // Métodos update e remove comentados podem ser descomentados e ajustados conforme necessário.
 }

@@ -9,6 +9,7 @@ export class UsuarioMiddleware {
     const { nome, email, username, password } = req.body;
 
     if (!nome) {
+      console.log("Erro: Nome não fornecido");
       res.status(400).json({
         ok: false,
         message: "Nome é obrigatório.",
@@ -16,6 +17,7 @@ export class UsuarioMiddleware {
     }
 
     if (!email) {
+      console.log("Erro: Email não fornecido");
       res.status(400).json({
         ok: false,
         message: "Email é obrigatório.",
@@ -24,6 +26,7 @@ export class UsuarioMiddleware {
 
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(email)) {
+      console.log("Erro: Formato de email inválido");
       res.status(400).json({
         ok: false,
         message: "Formato de email inválido.",
@@ -31,6 +34,7 @@ export class UsuarioMiddleware {
     }
 
     if (!username) {
+      console.log("Erro: Username não fornecido");
       res.status(400).json({
         ok: false,
         message: "Username é obrigatório.",
@@ -38,6 +42,7 @@ export class UsuarioMiddleware {
     }
 
     if (!password) {
+      console.log("Erro: Senha não fornecida");
       res.status(400).json({
         ok: false,
         message: "Senha é obrigatória.",
@@ -45,13 +50,13 @@ export class UsuarioMiddleware {
     }
 
     if (password.length < 6) {
+      console.log("Erro: Senha muito curta");
       res.status(400).json({
         ok: false,
         message: "A senha deve ter pelo menos 6 caracteres.",
       });
     }
 
-    // Se todas as validações passarem, chama next()
-    next();
+    return next();
   }
 }

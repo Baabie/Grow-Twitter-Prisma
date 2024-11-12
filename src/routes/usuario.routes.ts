@@ -8,23 +8,21 @@ export class UsuarioRoutes {
     const usuarioController = new UsuarioController();
 
     // Rota para criar um novo usuário
-    router.post("/usuarios", UsuarioMiddleware.validate, (req, res) =>
-      usuarioController.create(req, res)
+    router.post(
+      "/usuarios",
+      UsuarioMiddleware.validate,
+      usuarioController.create
     );
 
     // Rota para seguir um usuário
-    router.post("/follow", (req, res) => usuarioController.follow(req, res));
+    router.post("/follow", usuarioController.follow);
 
     // Rota para deixar de seguir um usuário
-    router.post("/unfollow", (req, res) =>
-      usuarioController.unfollow(req, res)
-    );
+    router.post("/unfollow", usuarioController.unfollow);
 
-    router.get("/usuarios", (req, res) => usuarioController.findAll(req, res));
+    router.get("/usuarios", usuarioController.findAll);
 
-    router.get("/usuarios/:id", (req, res) =>
-      usuarioController.findOneById(req, res)
-    );
+    router.get("/usuarios/:id", usuarioController.findOneById);
 
     return router;
   }
