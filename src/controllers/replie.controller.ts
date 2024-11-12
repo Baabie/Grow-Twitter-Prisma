@@ -10,7 +10,7 @@ export class ReplyController {
 
   public async create(req: Request, res: Response): Promise<void> {
     try {
-      const { usuarioId, tweetId, content } = req.body; // Assumindo que esses dados vêm do corpo da requisição
+      const { usuarioId, tweetId, content } = req.body;
       const reply = await this.replyService.create(usuarioId, tweetId, content);
       res.status(201).json(reply);
     } catch (error: any) {
@@ -38,7 +38,7 @@ export class ReplyController {
     try {
       const { id } = req.params;
       await this.replyService.delete(id);
-      res.status(204).send(); // No content
+      res.status(204).send();
     } catch (error: any) {
       res.status(500).json({
         ok: false,

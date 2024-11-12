@@ -60,7 +60,7 @@ export class UsuarioService {
     const where: Prisma.UsuarioWhereInput = {};
 
     if (query.nome) {
-      where.nome = { contains: query.nome, mode: "insensitive" }; // Busca insensível ao caso
+      where.nome = { contains: query.nome, mode: "insensitive" };
     }
 
     try {
@@ -72,7 +72,7 @@ export class UsuarioService {
         ok: true,
         code: 200,
         message: "Usuários buscados com sucesso!",
-        data: usuarios, // Retorna a lista de usuários
+        data: usuarios,
       };
     } catch (error: any) {
       return {
@@ -103,7 +103,7 @@ export class UsuarioService {
         ok: true,
         code: 200,
         message: "Usuário encontrado com sucesso!",
-        data: usuario, // Retorna o usuário encontrado
+        data: usuario,
       };
     } catch (error: any) {
       return {

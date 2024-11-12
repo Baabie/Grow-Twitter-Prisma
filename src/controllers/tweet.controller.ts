@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { Like, PrismaClient, Tweet } from "@prisma/client";
 import { CreateTweetDto, TweetDto } from "../dtos/tweet.dto";
-import { TweetService } from "../services/tweet-service";
 import { QueryFilterDto } from "../dtos/usuario.dto";
 import { ResponseApi } from "../types/response";
+import { TweetService } from "../services/tweet-service";
 const prisma = new PrismaClient();
 
 export class TweetController {

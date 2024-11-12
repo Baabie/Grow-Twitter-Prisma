@@ -27,13 +27,13 @@ export class TweetService {
       },
     });
 
-    console.log(tweetCreated); // Para verificar a estrutura do tweet criado
+    console.log(tweetCreated);
 
     return {
       ok: true,
       code: 201,
       message: "Tweet cadastrado com sucesso!",
-      data: this.mapToDto(tweetCreated), // Mapeamento direto
+      data: this.mapToDto(tweetCreated),
     };
   }
 
@@ -58,7 +58,7 @@ export class TweetService {
       ok: true,
       code: 200,
       message: "Tweets buscados com sucesso!",
-      data: tweets.map((tweet) => this.mapToDto(tweet)), // Mapeamento direto
+      data: tweets.map((tweet) => this.mapToDto(tweet)),
     };
   }
 
@@ -80,7 +80,7 @@ export class TweetService {
       ok: true,
       code: 200,
       message: "Tweet buscado com sucesso!",
-      data: this.mapToDto(tweet), // Mapeamento direto
+      data: this.mapToDto(tweet),
     };
   }
 
@@ -128,7 +128,7 @@ export class TweetService {
       ok: true,
       code: 200,
       message: "Tweet atualizado com sucesso!",
-      data: this.mapToDto(updatedTweet), // Mapeamento direto
+      data: this.mapToDto(updatedTweet),
     };
   }
 
@@ -148,7 +148,7 @@ export class TweetService {
       };
     }
 
-    const tweetDto = this.mapToDto(tweet); // Mapeamento direto
+    const tweetDto = this.mapToDto(tweet);
 
     await prisma.tweet.delete({
       where: { id },
@@ -162,7 +162,6 @@ export class TweetService {
     };
   }
 
-  // Método de mapeamento diretamente no serviço
   private mapToDto(tweet: {
     id: string;
     descricao: string;

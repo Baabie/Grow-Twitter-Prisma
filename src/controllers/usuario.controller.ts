@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CreateUsuarioDto } from "../dtos/usuario.dto";
-import { UsuarioService } from "../services/usuario.service";
+import { UsuarioService } from "../services";
 
 export class UsuarioController {
   public async create(req: Request, res: Response): Promise<void> {
