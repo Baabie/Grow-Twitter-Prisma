@@ -14,15 +14,15 @@ export class UsuarioRoutes {
       usuarioController.create
     );
 
+    router.get("/usuarios", usuarioController.findAll);
+
+    router.get("/usuarios/:id", usuarioController.findOneById);
+
     // Rota para seguir um usuário
     router.post("/follow", usuarioController.follow);
 
     // Rota para deixar de seguir um usuário
     router.post("/unfollow", usuarioController.unfollow);
-
-    router.get("/usuarios", usuarioController.findAll);
-
-    router.get("/usuarios/:id", usuarioController.findOneById);
 
     return router;
   }
