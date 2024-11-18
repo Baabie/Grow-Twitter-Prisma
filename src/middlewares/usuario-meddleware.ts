@@ -24,15 +24,6 @@ export class UsuarioMiddleware {
       });
     }
 
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) {
-      console.log("Erro: Formato de email inválido");
-      res.status(400).json({
-        ok: false,
-        message: "Formato de email inválido.",
-      });
-    }
-
     if (!username) {
       console.log("Erro: Username não fornecido");
       res.status(400).json({
