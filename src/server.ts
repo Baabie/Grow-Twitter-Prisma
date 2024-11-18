@@ -22,7 +22,7 @@ app.get("/", (request: Request, response: Response) => {
 // DATABASE CONECTION
 const prisma = new PrismaClient();
 
-app.get("/usuarios", (req: Request, res: Response) => {
+app.get("/usuarios", async (req: Request, res: Response) => {
   const { nome, email, username, password } = req.body;
 
   // Validacoes de dados obrigatórios
@@ -90,12 +90,45 @@ app.get("/usuarios", (req: Request, res: Response) => {
 
   // Verificar colunas unicas
 
-  const usuario = prisma.usuario.findUnique({
-    where: { email },
+  const usuario = await prisma.usuario.findUnique({
+    where: { email: email, username: username },
   });
 
-  console.log(usuario);
-  res.status(201).json({ ok: true, message: "Usuário criado com sucesso!" });
+  if (usuario) {
+    if (usuario.email === email) {
+    }
+    res.status(409).json({
+      ok: false,
+      message: "E-mail ja cadastrado.",
+    });
+  }
+
+  if (usuario) {
+    if (usuario.username === username) {
+    }
+    res.status(409).json({
+      ok: false,
+      message: "Usuário já está em uso.",
+    });
+  }
+
+  // Criaçao do nosso usuario no banco de dados
+
+  const usuarioCriado = await prisma.usuario.create({
+    data: {
+      nome: nome,
+      email: email,
+      username: username,
+      password: password,
+    },
+  });
+  res
+    .status(201)
+    .json({
+      ok: true,
+      message: "Usuário criado com sucesso!",
+      data: usuarioCriado,
+    });
 });
 
 // app.get("/usuarios", async (request: Request, response: Response) => {
