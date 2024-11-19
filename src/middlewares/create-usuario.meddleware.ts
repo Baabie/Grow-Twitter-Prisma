@@ -64,7 +64,7 @@ export class CreateUsuarioMiddleware {
         .json({ ok: false, message: "Nome deve ter pelo menos 3 caracteres." });
     }
 
-    if (email.includes("@") && !email.includes(".com")) {
+    if (!email.includes("@") || !email.includes(".com")) {
       res.status(400).json({ ok: false, message: "E-mail inválido." });
     }
 
