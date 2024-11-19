@@ -1,20 +1,24 @@
 import { Router } from "express";
 import { UsuarioController } from "../controllers/usuario.controller";
-import { UsuarioMiddleware } from "../middlewares/usuario-meddleware";
+import { CreateUsuarioMiddleware } from "../middlewares/create-usuario.meddleware";
 
 export class UsuarioRoutes {
   public static execute(): Router {
     const router = Router();
     const usuarioController = new UsuarioController();
 
-    // Rota para criar um novo usuário
+    // CREATE - POST
     router.post(
       "/usuarios",
-      UsuarioMiddleware.validate,
-      usuarioController.create
+      [
+        CreateUsuarioMiddleware.validateRequired,
+        CreateUsuarioMiddleware.validateTypes,
+        CreateUsuarioMiddleware.validateData,
+      ],
+      UsuarioController.create
     );
 
-    router.get("/usuarios", usuarioController.findAll);
+    //FRIND ALL - GET
 
     router.get("/usuarios/:id", usuarioController.findOneById);
 

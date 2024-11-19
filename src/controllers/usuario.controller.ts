@@ -1,29 +1,49 @@
 import { Request, Response } from "express";
 import { CreateUsuarioDto } from "../dtos/usuario.dto";
 import { UsuarioService } from "../services";
+import { prisma } from "../database/prisma.database";
 
 export class UsuarioController {
-  public async create(req: Request, res: Response): Promise<void> {
-    try {
-      const { nome, email, username, password } = req.body;
+  public static async create(req: Request, res: Response): Promise<void> {
+    const { nome, email, username, password } = req.body;
 
-      const data: CreateUsuarioDto = {
-        nome,
-        email,
-        username,
-        password,
-      };
+    // Verificar colunas únicas
+    const usuario = await prisma.usuario.findUnique({
+      where: { email: email, username: username },
+    });
 
-      const service = new UsuarioService();
-      const result = await service.create(data);
-      const { code, ...response } = result;
-      res.status(code).json(response);
-    } catch (error: any) {
-      res.status(500).json({
-        ok: false,
-        message: `Erro do servidor: ${error.message}`,
-      });
+    if (usuario) {
+      if (usuario.email === email) {
+        res.status(409).json({
+          ok: false,
+          message: "E-mail já cadastrado.",
+        });
+        return;
+      }
+
+      if (usuario.username === username) {
+        res.status(409).json({
+          ok: false,
+          message: "Usuário já está em uso.",
+        });
+        return;
+      }
     }
+
+    // Criação do usuário no banco de dados
+    const usuarioCriado = await prisma.usuario.create({
+      data: {
+        nome: nome,
+        email: email,
+        username: username,
+        password: password,
+      },
+    });
+    res.status(201).json({
+      ok: true,
+      message: "Usuário criado com sucesso!",
+      data: usuarioCriado,
+    });
   }
 
   public async follow(req: Request, res: Response): Promise<void> {
